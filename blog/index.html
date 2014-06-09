@@ -26,9 +26,9 @@
       <canvas id="gameoflife"></canvas>
       <div class="inner">
         <!-- Change this to your site title -->
-        <a href="/blog" onclick = "return false"><h1 onclick="home()/blog">OpenOSOM</h1></a>
+        <a href="/blog"><h1>OpenOSOM</h1></a>
         <span class="searchbar">
-        <input type="text" id="searchbar" onclick="cache()" onkeyup="if(this.value){doSearch(this.value)}else{home()/blog}">
+        <input type="text" id="searchbar" onclick="cache()" onkeyup="if(this.value){doSearch(this.value)}else{home()}">
         </span>
       </div>
     </header>
@@ -50,8 +50,8 @@
             <div class="loading" index="3"></div>
             <div class="loading" index="4"></div>
           </div>
-          <a href="/blog" onclick="return false">
-            <div id="backhome" onclick="home()/blog">
+          <a href="/" onclick="return false">
+            <div id="backhome" onclick="home()">
               <div class="backhome">
                 <div class="backhomeinner">
                   <div class="backleft"></div>
