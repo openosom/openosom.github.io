@@ -27,7 +27,7 @@ function search(q){
 		}
 		else{
 			var el = document.createElement('script');
-			el.src = 'https://api.github.com/repos/' + githubname + '/' + repos + '/contents/md?callback=searchlist'+(branch?('&ref='+branch):'');
+			el.src = 'https://api.github.com/repos/' + githubname + '/' + repos + '/contents/blog/md?callback=searchlist'+(branch?('&ref='+branch):'');
 			document.getElementsByTagName('head')[0].appendChild(el);
 		}
 	}
@@ -95,7 +95,7 @@ function cache(){
 		}
 		else{
 			var el = document.createElement('script');
-			el.src = 'https://api.github.com/repos/' + githubname + '/' + repos + '/contents/md?callback=docache'+(branch?('&ref='+branch):'');
+			el.src = 'https://api.github.com/repos/' + githubname + '/' + repos + '/contents/blog/md?callback=docache'+(branch?('&ref='+branch):'');
 			document.getElementsByTagName('head')[0].appendChild(el);
 		}
 	}
