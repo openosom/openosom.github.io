@@ -47,7 +47,7 @@ function searchlist(list){
 			currentTotal++;
 		}
 		else{
-			var url = location.protocol + '//' + location.hostname + (isroot?'':('/'+repos))+'/md/' + list.data[i-1].name+(suffix?suffix:'');
+			var url = location.protocol + '//' + location.hostname + (isroot?'':('/'+repos))+'/blog/md/' + list.data[i-1].name+(suffix?suffix:'');
 			searchLoadXMLDoc(url, list.data[i-1].name);
 		}
 	}
@@ -104,7 +104,7 @@ function cache(){
 function docache(list){
 	postList = list;
 	for(var i = list.data.length; i > 0; i--){
-		var url = location.protocol + '//' + location.hostname + (isroot?'':('/'+repos))+'/md/' + list.data[i-1].name+(suffix?suffix:'');
+		var url = location.protocol + '//' + location.hostname + (isroot?'':('/'+repos))+'/blog/md/' + list.data[i-1].name+(suffix?suffix:'');
 		var xmlhttp=null;
 		if (window.XMLHttpRequest){// code for IE7, Firefox, Opera, etc.
 			xmlhttp=new XMLHttpRequest();

@@ -136,7 +136,7 @@ function chktakinglonger(){
 }
 
 function showpost(path){
-	var url = location.protocol + '//' + location.hostname + (isroot?'':('/'+repos))+'/md/' + path.substr(1).replace(/\//g, '-')+(suffix?suffix:'');
+	var url = location.protocol + '//' + location.hostname + (isroot?'':('/'+repos))+'/blog/md/' + path.substr(1).replace(/\//g, '-')+(suffix?suffix:'');
 	document.title = decodeUtf8(getPostName(path)) + ' - '+sitetitle;
 	pdate = path.substr(1).split('/')[0]+'-'+path.substr(1).split('/')[1]+'-'+path.substr(1).split('/')[2];
 	loadXMLDoc(url);
