@@ -1,4 +1,4 @@
-var disqus_shortname = 'sneezry';			//Short Name of disqus, this parameter is for disqus comment box.
+var disqus_shortname = 'openosom';			//Short Name of disqus, this parameter is for disqus comment box.
 var hostbase = 'http://www.openosom.org/blog';		//The absolute root address of your blog without '/' in the end.
 var githubname = 'openosom';						//Your username of GitHub.
 var repos = 'openosom.github.io';					//Name of repository that contains your blog.
