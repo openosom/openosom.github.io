@@ -62,7 +62,7 @@ function home(){
 	dis.style.display = 'none';
 	dis.innerHTML = '';
 	if(page==1){
-		window.history.pushState(null, '', (isroot?'':('/'+repos))+'/');
+		window.history.pushState(null, '', (isroot?'':('/'+repos))+'/'+subdir+'/');
 	}
 	else{
 		path = '/page/'+page;
