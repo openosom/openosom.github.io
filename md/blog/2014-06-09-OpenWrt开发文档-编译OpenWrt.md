@@ -1,10 +1,10 @@
 ## 三 编译OpenWrt
 
-在完成[准备工作]()和[获取OpenWrt-OpenOSOM源代码]()之后就可以开始编译工作了^_^
+在完成[准备工作](/blog/#!/2014/06/09/OpenWrt开发文档-之准备工作)和[获取OpenWrt-OpenOSOM源代码](/blog/#!/2014/06/09/OpenWrt开发文档-获取OpenWrt-OpenOSOM源代码)之后就可以开始编译工作了^_^
 
-  * 编译OpenWrt-DreamBox一般需要以下五个步骤：
+  * 编译OpenWrt一般需要以下五个步骤：
     1. 准备工作：搭建编译环境
-    2. 通过Subversion命令获取DreamBox源代码
+    2. 通过svn、git获取OpenWrt源代码
     3. 更新下载和安装扩展软件包，即package feeds
     4. 用menuconfig来配置目标平台和软件包
     5. 最后make开始编译固件
@@ -119,35 +119,35 @@ __比如要为TP-LINK TL-MR3420编译OpenWrt：__
 
             LuCI ->Translations -> <*> luci-i18n-chinese
 
-    - a. 添加DDNS
+    - c. 添加DDNS
 
             LuCI ->Applications -> <*>luci-app-ddns
 
-    - a. 添加USB挂载
+    - d. 添加USB挂载
 
             Base system -> <*>block-mount
 
-    - a. 添加硬盘格式支持
+    - e. 添加硬盘格式支持
 
             Kernel modules -> Filesystems -> <*> kmod-fs-ext4
 
-    - a. 添加UTF8编码
+    - f. 添加UTF8编码
 
             Kernel modules -> Native Language Support -> <*> kmod-nls-utf8
 
-    - a. 添加USB扩展支持
+    - g. 添加USB扩展支持
 
             Kernel modules -> USB Support -> <*> kmod-usb-storage-extras.
 
-    - a. 添加自动挂载工具
+    - h. 添加自动挂载工具
 
             Utilities -> Filesystem -> <*> badblocks
 
-    - a. 添加复位键支持
+    - i. 添加复位键支持
 
             Utilities -> <*> restorefactory
 
-    - a. 添加一键开关无线
+    - j. 添加一键开关无线
 
             Utilities -> <*> wifitoggle
 
@@ -165,7 +165,7 @@ __比如要为TP-LINK TL-MR3420编译OpenWrt：__
 
 ### 4. 编译OpenWrt（Build OpenWrt image）
 
-  * 完成menuconfig配置后，退出保存，开始编译DreamBox：
+  * 完成menuconfig配置后，退出保存，开始编译OpenWrt：
 
         $ make
 
