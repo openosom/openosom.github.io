@@ -6,7 +6,7 @@ var isroot=((repos.indexOf('github.com')==-1 && repos.indexOf('github.io')==-1)?
 
 function doSearch(q){
 	if(q){
-		window.history.pushState(null, '', (isroot?'':('/'+repos))+'/blog/#!/search/'+q);
+		window.history.pushState(null, '', (isroot?'':('/'+repos))+'/'+subdir+'/#!/search/'+q);
 		search(q);
 	}
 }
@@ -27,7 +27,7 @@ function search(q){
 		}
 		else{
 			var el = document.createElement('script');
-			el.src = 'https://api.github.com/repos/' + githubname + '/' + repos + '/contents/blog/md?callback=searchlist'+(branch?('&ref='+branch):'');
+			el.src = 'https://api.github.com/repos/' + githubname + '/' + repos + '/contents/'+subdir+'/'+mddir+'?callback=searchlist'+(branch?('&ref='+branch):'');
 			document.getElementsByTagName('head')[0].appendChild(el);
 		}
 	}
@@ -42,12 +42,12 @@ function searchlist(list){
 			list.data[i-1].name = list.data[i-1].name.substr(0, list.data[i-1].name.length-suffix.length);
 		}
 		if(list.data[i-1].name.toLowerCase().indexOf(kw.toLowerCase()) != -1){
-			content.innerHTML += '<postlist><a href="'+(isroot?'':('/'+repos))+'/blog/#!/' + encodePath(list.data[i-1].name) + '">' + getPostName(list.data[i-1].name) + '</a></postlist>';
+			content.innerHTML += '<postlist><a href="'+(isroot?'':('/'+repos))+'/'+subdir+'/#!/' + encodePath(list.data[i-1].name) + '">' + getPostName(list.data[i-1].name) + '</a></postlist>';
 			searchResult = true;
 			currentTotal++;
 		}
 		else{
-			var url = location.protocol + '//' + location.hostname + (isroot?'':('/'+repos))+'/blog/md/' + list.data[i-1].name+(suffix?suffix:'');
+			var url = location.protocol + '//' + location.hostname + (isroot?'':('/'+repos))+'/'+subdir+'/'+mddir+'/' + list.data[i-1].name+(suffix?suffix:'');
 			searchLoadXMLDoc(url, list.data[i-1].name);
 		}
 	}
@@ -69,7 +69,7 @@ function searchLoadXMLDoc(url, pname){
 				//backhome.style.display = 'block';
 				if (xmlhttp.status==200){// 200 = "OK"
 					if(xmlhttp.responseText.toLowerCase().indexOf(kw.toLowerCase()) != -1){
-						content.innerHTML += '<postlist><a href="'+(isroot?'':('/'+repos))+'/blog/#!/' + pname.replace(/-/g, '/') + '">' + pname.split('-')[pname.split('-').length-1] + '</a></postlist>';
+						content.innerHTML += '<postlist><a href="'+(isroot?'':('/'+repos))+'/'+subdir+'/#!/' + pname.replace(/-/g, '/') + '">' + pname.split('-')[pname.split('-').length-1] + '</a></postlist>';
 						searchResult = true;
 					}
 				}
@@ -95,7 +95,7 @@ function cache(){
 		}
 		else{
 			var el = document.createElement('script');
-			el.src = 'https://api.github.com/repos/' + githubname + '/' + repos + '/contents/blog/md?callback=docache'+(branch?('&ref='+branch):'');
+			el.src = 'https://api.github.com/repos/' + githubname + '/' + repos + '/contents/'+'/'+subdir+'/'+mddir+'?callback=docache'+(branch?('&ref='+branch):'');
 			document.getElementsByTagName('head')[0].appendChild(el);
 		}
 	}
@@ -104,7 +104,7 @@ function cache(){
 function docache(list){
 	postList = list;
 	for(var i = list.data.length; i > 0; i--){
-		var url = location.protocol + '//' + location.hostname + (isroot?'':('/'+repos))+'/blog/md/' + list.data[i-1].name+(suffix?suffix:'');
+		var url = location.protocol + '//' + location.hostname + (isroot?'':('/'+repos))+'/'+subdir+'/'+mddir+'/'+ list.data[i-1].name+(suffix?suffix:'');
 		var xmlhttp=null;
 		if (window.XMLHttpRequest){// code for IE7, Firefox, Opera, etc.
 			xmlhttp=new XMLHttpRequest();

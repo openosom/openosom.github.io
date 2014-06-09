@@ -4,7 +4,7 @@ if(location.search.substr(1,19)=='_escaped_fragment_='){
 	path = decodeURIComponent(location.search.substr(20).split('&')[0]);
 }
 if(path == '/'){path = ''; window.history.replacetate(null, '', '/');page=1;}
-else if(path && !location.search){window.history.replaceState(null, '', (isroot?'':('/'+repos))+'/blog/#!'+path);}
+else if(path && !location.search){window.history.replaceState(null, '', (isroot?'':('/'+repos))+'/'+subdir+'/#!'+path);}
 var converter = new Showdown.converter();
 var content = document.getElementById('content');
 var dis = document.getElementById('disqus_thread');
@@ -51,7 +51,7 @@ function main(){
 			document.getElementById('takinglonger').style.display = 'none';
 			chktakinglonger();
 			var el = document.createElement('script');
-			el.src = 'https://api.github.com/repos/' + githubname + '/' + repos + '/contents/blog/md?callback=showlist'+(branch?('&ref='+branch):'');
+			el.src = 'https://api.github.com/repos/' + githubname + '/' + repos + '/contents/'+subdir+'/'+mddir+ '?callback=showlist'+(branch?('&ref='+branch):'');
 			document.getElementsByTagName('head')[0].appendChild(el);
 		}
 	}
@@ -66,7 +66,7 @@ function home(){
 	}
 	else{
 		path = '/page/'+page;
-		window.history.pushState(null, '', (isroot?'':('/'+repos))+'/blog/#!/page/'+page);
+		window.history.pushState(null, '', (isroot?'':('/'+repos))+'/'+subdir+'/#!/page/'+page);
 	}
 	main();
 }
@@ -136,7 +136,7 @@ function chktakinglonger(){
 }
 
 function showpost(path){
-	var url = location.protocol + '//' + location.hostname + (isroot?'':('/'+repos))+'/blog/md/' + path.substr(1).replace(/\//g, '-')+(suffix?suffix:'');
+	var url = location.protocol + '//' + location.hostname + (isroot?'':('/'+repos))+'/'+subdir+'/'+mddir+'/' + path.substr(1).replace(/\//g, '-')+(suffix?suffix:'');
 	document.title = decodeUtf8(getPostName(path)) + ' - '+sitetitle;
 	pdate = path.substr(1).split('/')[0]+'-'+path.substr(1).split('/')[1]+'-'+path.substr(1).split('/')[2];
 	loadXMLDoc(url);
@@ -158,22 +158,22 @@ function showlist(list){
 	var txt = '';
 	if(page*20-20>=list.data.length && page!=1){
 		page = Math.ceil(list.data.length/20);
-		window.history.replaceState(null, '', (isroot?'':('/'+repos))+'/blog/#!/page/'+page);
+		window.history.replaceState(null, '', (isroot?'':('/'+repos))+'/'+subdir+'/#!/page/'+page);
 	}
 	for(var i = list.data.length-(page-1)*20; i > 0 && i > list.data.length-page*20; i--){
 		if(suffix && list.data[i-1].name.substr(-suffix.length)==suffix){
 			list.data[i-1].name = list.data[i-1].name.substr(0, list.data[i-1].name.length-suffix.length);
 		}
-		txt += '<postlist><a href="'+(isroot?'':('/'+repos))+'/blog/#!/' + encodePath(list.data[i-1].name, true) + '">' + getPostName(list.data[i-1].name) + '</a><div class="post_info"><span class="post_date">Posted at '+list.data[i-1].name.split('-')[0]+'-'+list.data[i-1].name.split('-')[1]+'-'+list.data[i-1].name.split('-')[2]+'</span><span class="disqus_count"><a href="' + hostbase + '/' + encodePath(list.data[i-1].name, false) + (commentscount[i]?'':'#disqus_thread') + '" name="commentscount" id="post-'+i+'">'+(commentscount[i]?commentscount[i]:'')+'</a></span></div></postlist>';
+		txt += '<postlist><a href="'+(isroot?'':('/'+repos))+'/'+subdir+'/#!/' + encodePath(list.data[i-1].name, true) + '">' + getPostName(list.data[i-1].name) + '</a><div class="post_info"><span class="post_date">Posted at '+list.data[i-1].name.split('-')[0]+'-'+list.data[i-1].name.split('-')[1]+'-'+list.data[i-1].name.split('-')[2]+'</span><span class="disqus_count"><a href="' + hostbase + '/' + encodePath(list.data[i-1].name, false) + (commentscount[i]?'':'#disqus_thread') + '" name="commentscount" id="post-'+i+'">'+(commentscount[i]?commentscount[i]:'')+'</a></span></div></postlist>';
 	}
 	if(page==1 && page*20<list.data.length){
-		txt += '<postlist><a class="prev_page" href="'+(isroot?'':('/'+repos))+'/blog/#!/page/'+(page+1)+'">←较早的文章</a><div style="clear:both"></div></postlist>';
+		txt += '<postlist><a class="prev_page" href="'+(isroot?'':('/'+repos))+'/'+subdir+'/#!/page/'+(page+1)+'">←较早的文章</a><div style="clear:both"></div></postlist>';
 	}
 	else if(page>1 && page*20>=list.data.length){
-		txt += '<postlist><a class="next_page" href="'+(isroot?'':('/'+repos))+'/blog/#!/page/'+(page-1)+'">较新的文章→</a><div style="clear:both"></div></postlist>';
+		txt += '<postlist><a class="next_page" href="'+(isroot?'':('/'+repos))+'/'+subdir+'/#!/page/'+(page-1)+'">较新的文章→</a><div style="clear:both"></div></postlist>';
 	}
 	else if(page>1 && page*20<list.data.length){
-		txt += '<postlist><a class="prev_page" href="'+(isroot?'':('/'+repos))+'/blog/#!/page/'+(page+1)+'">←较早的文章</a><a class="next_page" href="'+(isroot?'':('/'+repos))+'/blog/#!/page/'+(page-1)+'">较新的文章→</a><div style="clear:both"></div></postlist>';
+		txt += '<postlist><a class="prev_page" href="'+(isroot?'':('/'+repos))+'/'+subdir+'/#!/page/'+(page+1)+'">←较早的文章</a><a class="next_page" href="'+(isroot?'':('/'+repos))+'/'+subdir+'/#!/page/'+(page-1)+'">较新的文章→</a><div style="clear:both"></div></postlist>';
 	}
 	loading.style.display = 'none';
 	content.innerHTML = txt;
@@ -236,7 +236,7 @@ function filterJekyllHeader(post){
 
 window.onhashchange = function(){
 	if(location.hash && location.hash.substr(1,1) != '!'){
-		window.history.replaceState(null, '', (isroot?'':('/'+repos))+'/blog/#!'+path);
+		window.history.replaceState(null, '', (isroot?'':('/'+repos))+'/'+subdir+'/#!'+path);
 		return;
 	}
 	//goToTop();
