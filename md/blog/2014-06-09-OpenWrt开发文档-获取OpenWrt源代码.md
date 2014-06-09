@@ -5,7 +5,7 @@ OpenWrt-OpenOSOM主要针对针对嵌入式开发，[硬件支持列表]()。
 
   * 1 获取OpenWrt针对嵌入式开发板的OpenOSOM分支GIT代码库：
 
-        $git clone git://github.com/openosom/backfire_10.03.1 openosom
+        $ git clone git://github.com/openosom/backfire_10.03.1 openosom
 
 
   * 2 获取OpenWrt针对嵌入式开发板的OpenOSOM分支SVN代码库：
