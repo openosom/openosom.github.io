@@ -1,6 +1,6 @@
 ## 三 编译OpenWrt
 
-在完成[准备工作](/blog/#!/2014/06/09/OpenWrt开发文档-之准备工作)和[获取OpenWrt-OpenOSOM源代码](/blog/#!/2014/06/09/OpenWrt开发文档-获取OpenWrt-OpenOSOM源代码)之后就可以开始编译工作了^_^
+在完成[准备工作](/blog/#!/2014/06/09/OpenWrt开发文档-准备工作)和[获取OpenWrt-OpenOSOM源代码](/blog/#!/2014/06/09/OpenWrt开发文档-获取OpenWrt源代码)之后就可以开始编译工作了^_^
 
   * 编译OpenWrt一般需要以下五个步骤：
     1. 准备工作：搭建编译环境
