@@ -6,7 +6,7 @@ var subdir ='blog'; 							// None'', Wiki'wiki', Blog'blog'
 var mddir ='md';							//files of Markdown
 var sitetitle = 'Blog of OpenOSOM';						//Name of your blog.
 var rss = '';									//Rss address of your blog.
-var suffix = '';								//Suffix of post files, '.' should be included.
+var suffix = '.md';								//Suffix of post files, '.' should be included.
 var branch = '';								//Branch of your blog repository. 'master' is default if you left it blank.
 
 //Sample Config:
