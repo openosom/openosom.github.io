@@ -151,7 +151,10 @@
 
 这里使用龙芯2官方提供的U盘安装Debian的vmlinux，所以为了使得能够安装OpenWrt系统，需要如下操作：
 
-  * 首先开机时按del， 进入PMON命令模式，输入如下指令。
+  * 首先把bin/loongson2f/目录下的vmlinux-usbinstall和loongson2f-openwrt-rootfs-2014.tar.gz两个文件复制到U盘根目录。（U盘可为fat、ext2、ext3文件系统）
+
+  * U盘插入龙芯电脑，开机时按del， 进入PMON命令模式，输入如下指令。
+
         pmon> load (usb0,0)/vmlinux-usbinstall
             
                 Loading file:(usb0,0)/vmlinux-usbinstall\(elf)
