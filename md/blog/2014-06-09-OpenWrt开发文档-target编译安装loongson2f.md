@@ -251,8 +251,9 @@ okay，安装完毕！
 
 
 
+---------------------------------------
 
-
+  * 转载请保留信息完整性，来源于 [http://www.openosom.org/blog/](http://www.openosom.org/blog/)
 
 
 
