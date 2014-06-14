@@ -1,121 +1,89 @@
-## 三 编译目标平台loongson2f
+## 三 编译目标平台goldfish
 
-在完成[准备工作](/blog/#!/2014/06/09/OpenWrt开发文档-准备工作)和[获取OpenWrt-OpenOSOM源代码](/blog/#!/2014/06/09/OpenWrt开发文档-获取OpenWrt源代码)之后就可以开始编译工作了^_^
+__编译目标平台xxx系列__ 是[第三章 编译OpenWrt-DreamBox](/blog/#!/2014/06/09/OpenWrt开发文档-编译OpenWrt)的延续，将对各个不同的目标平台进行详细描述。
 
-  * 编译OpenWrt一般需要以下五个步骤：
-    1. 准备工作：搭建编译环境
-    2. 通过svn、git获取OpenWrt源代码
-    3. 更新下载和安装扩展软件包，即package feeds
-    4. 用menuconfig来配置目标平台和软件包
-    5. 最后make开始编译固件
+----------------------
+
+  * 已经把goldfish放在OpenWrt-OpenOSOM中得到支持，主要针对嵌入式开发的。请参考[准备工作](/blog/#!/2014/06/09/OpenWrt开发文档-准备工作)和[获取OpenWrt-OpenOSOM源代码](/blog/#!/2014/06/09/OpenWrt开发文档-获取OpenWrt源代码)之后就可以开始编译工作了^_^
 
 
-  * 假设你的工作目录为openosom，进入openosom目录：
-
-        $ cd openosom
-
-  * OpenWrt-OpenOSOM会不停地更新，为了保证源代码的最新可以使用svn up或者git pull更新：
-
-        $ svn update    //如果是SVN代码仓
-        $ git pull      //如果是GIT代码仓
+  * 目前goldfish使用的是ARMv5指令集，linux-2.6.30内核，其模拟器qemu-goldfish也被我收录在feeds/device下。
 
 
+  * 哈哈，在没有嵌入式硬件开发平台的情况下，我们也能利用OpenWrt做嵌入式开发啦 : )
 
-### 1. 添加扩展软件包(Add packages from extra feeds)
 
-虽然基本系统可以build出Image，但生成的Image缺少很多应用程序，需要添加额外的扩展软件包：
+  * 本篇会详细描述：
+   - a. qemu-goldfish模拟器
+   - b. tslib触摸屏校正：该软件包在feeds/qpe中
+   - c. qtopia图形界面：该软件包在feeds/qpe中
+   - d. gcc编译器：该软件包刚刚被我修改完成，在feeds/packages_10.03.2中
 
-    $ cp feeds.conf.default feeds.conf
 
-然后编辑feeds.conf文件，前面加注释符号＃表示该软件源不会被下载和安装。需要安装何种软件源就去掉相应的＃：
-
+  * 首先确认安装了如下feeds：
 
         src-svn packages svn://svn.openwrt.org.cn/dreambox/feeds/packages_10.03.2
-        #src-svn luci http://svn.luci.subsignal.org/luci/tags/0.10.0/contrib/package
-        #src-link custom /usr/src/openwrt/custom-feed
+        src-svn qpe svn://svn.openwrt.org.cn/dreambox/feeds/qpe
+        src-svn device svn://svn.openwrt.org.cn/dreambox/feeds/device
 
 
-请注意，这个设置并不表示这些应用程序包会被编译，而只是在后面使用menuconfig命令时会获取这些包的描述信息（OpenWrt-Makefiles）。
+  * 现在，更新下载这些包，并安装它们到package/feeds/目录：
 
-现在，更新下载这些包，并安装它们到package/feeds/目录：
-
-    $ ./scripts/feeds update -a
-    $ ./scripts/feeds install -a
+        $ ./scripts/feeds update -a
+        $ ./scripts/feeds install -a
 
   * 更多详情参看：[扩展软件包package feeds详细说明]()
 
 
 
 
-### 2. 配置OpenWrt（Configure target and packages）
+### 配置OpenWrt（Configure target and packages）
 
-下一步是检查编译环境，若可进行编译则生成默认配置：
-
-        $ make defconfig
-
-若defconfig回显提示缺少软件包或编译库等依赖，则按提示安装所缺软件包或库等即可，不难的，细心点就行。
 
 现在开始配置OpenWrt，选择你需要目标平台，以及选择将要编译和添加进固件的软件包。运行命令：
 
         $ make menuconfig
 
-这个配置界面跟Linux内核的配置界面基本差不多，几乎每一项都有3个选择Y/M/N：
 
-  * Y：选择Y，该软件将被编译，并且加入到你的目标固件里；
-  * M：选择M，该软件包将会被编译，但不会被放入固件里。在需要它的时候，可以用OPKG软件包管理器进行安装；
-  * N：选择N，该软件包将不会被编译，也不会被安装进固件。
+  * 1 选择CPU型号
 
+        Target System   --->    (X) Goldfish (Android Emulator)
 
-  * 方向键是移动光标
-  * 回车键是确认
-  * 空格键是选择，可以代替Y/M/N键的使用
+<img src="/md/img/openwrt/goldfish/goldfish_menu_target_01.png" alt="loongson2f" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/goldfish/goldfish_menu_target_02.png.png" alt="loongson2f" align="middle" width="480" height="300"/>
 
 
+  * 2 Target Profile你可以选择不同的默认软件配置：
 
-  * 1 选择为龙芯CPU型号
+        Target Profile  --->   (X) (qtopia)Goldfish (Android Emulator)
 
-        Target System   --->    (X) LoongSon 2F
+   - a. (minimal)Goldfish (Android Emulator) : 这个配置仅仅包含最基本的packages，可能只有shell和一些命令行程序。
+   - b. (qtopia)Goldfish (Android Emulator) : 包含qtopia作为桌面环境，以及tslib触摸屏校验等。
 
-<img src="/md/img/openwrt/loongson2f/openwrt-loongson2f_001.png" alt="loongson2f" align="middle" width="480" height="300"/>
-
-
-  * 2 根据需求选择已经默认安装不同软件包的选项，如mini、luci（wifi未完成）：
-
-        Target Profile  --->   (X) YeeLoong2F(8089) LUCI
-                               ( ) YeeLoong2F(8089) mini
-                               ( ) YeeLoong2F(8089) wifi
-
-<img src="/md/img/openwrt/loongson2f/openwrt-loongson2f_002.png" alt="loongson2f" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/goldfish/goldfish_menu_profile_01.png.png" alt="loongson2f" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/goldfish/goldfish_menu_profile_02.png.png" alt="loongson2f" align="middle" width="480" height="300"/>
 
 
-  * 3 软件包就使用默认的，或者可以根据需要添加。例如在选mini的情况下，自己手动选上luci的软件包。
-    - a. 添加luci
+  * 3 默认已经添加了qemu_goldfish模拟器：
 
-            LuCI ->Collections -> <*> luci
+        Device -> <*> qemu_goldfish
 
-    - b. 添加luci的中文语言包
-
-            LuCI ->Translations -> <*> luci-i18n-chinese
-
-    - c. 添加DDNS
-
-            LuCI ->Applications -> <*>luci-app-ddns
-
-<img src="/md/img/openwrt/loongson2f/openwrt-loongson2f_003.png" alt="loongson2f" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/goldfish/goldfish_qemu_01.png" alt="loongson2f" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/goldfish/goldfish_qemu_02.png" alt="loongson2f" align="middle" width="480" height="300"/>
 
 
 
-  * 如果需要单独配置OpenWrt的linux kernel，可以使用下面命令配置：
+  * 4 选择build-essential，它会自动把binutils，gcc，make等都选择上，这样就能直接编译出goldfish所使用的Native Toolchain本地编译工具链了！
 
-        $ make kernel_menuconfig
+        Development  ---> <*> build-essential
 
-   这和普通的linux kernel的make menuconfig没有什么区别，可以根据需求自行配置。
-
-  * 如无特殊情况，直接使用默认的内核配置即可！
-
+<img src="/md/img/openwrt/goldfish/goldfish_menu_gcc_01.png.png" alt="loongson2f" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/goldfish/goldfish_menu_gcc_02.png.png" alt="loongson2f" align="middle" width="480" height="300"/>
 
 
-### 3. 编译OpenWrt（Build OpenWrt image）
+
+### 2. 编译OpenWrt（Build OpenWrt image）
+
 
   * 完成menuconfig配置后，退出保存，开始编译OpenWrt：
 
@@ -135,119 +103,57 @@
   * V=99：表示输出详细的debug信息
   * make world：表示编译所有
 
-如只想清除/编译某个模块，您可以做如下类似操作：
-
-        $ make package/qos/clean
-        $ make package/qos/compile
-        $ make package/qos/install
 
 
+### 4. goldfish运行OpenWrt
 
-### 4. 安装OpenWrt到龙芯2F本
-
-  * 编译结束后，生成的固件存放在bin目录下，其中包含了kernel和rootfs的镜像文件，以及众多可以使用OPKG工具安装的.ipk安装包。
-  * 接下了就是在龙芯2F电脑上安装OpenWrt了。
-
-
-这里使用龙芯2官方提供的U盘安装Debian的vmlinux，所以为了使得能够安装OpenWrt系统，需要如下操作：
-
-  * 首先把bin/loongson2f/目录下的vmlinux-usbinstall和loongson2f-openwrt-rootfs-2014.tar.gz两个文件复制到U盘根目录。（U盘可为fat、ext2、ext3文件系统）
-
-  * U盘插入龙芯电脑，开机时按del， 进入PMON命令模式，输入如下指令。
-
-        pmon> load (usb0,0)/vmlinux-usbinstall
-            
-                Loading file:(usb0,0)/vmlinux-usbinstall\(elf)
-                (elf)
-                0x........
-                Entry address is ...
-            
-        pmon> g
+  * 编译结束后，生成的固件存放在bin/goldfish目录下，其中包含了kernel和rootfs的镜像文件等，以及众多可以使用OPKG工具安装的.ipk安装包。
+   - a. qemu-goldfish： 该目录下包含goldfish的模拟器已经所使用的皮肤
+   - b. run-emulator.sh： 运行qemu-goldfish的脚本文件
+   - c. packages： 其中包含了众多可以使用OPKG工具安装的.ipk安装包
+   - d. openwrt-goldfish-kernel.bin等： 为qemu-goldfish所使用的kernel，system，data，ramdisk，rootfs等
 
 
-加载U盘上的内核（命令load (usb0,0)/vmlinux-usbinstall）并运行（命令g）。
+  * 进入bin/goldfish/，运行模拟器
+
+        $ cd bin/goldfish/
+        $ ./run-emulator.sh
+
+<img src="/md/img/openwrt/goldfish/goldfish_run_02.png" alt="loongson2f" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/goldfish/goldfish_run_03.png" alt="loongson2f" align="middle" width="480" height="300"/>
 
 
-NOTE：
+  * 测试运行goldfish下的本地编译器gcc
 
-  * 如果不行， 还可以把usb0 换成usb1试试；
-  * 还不行的话， 试试用一个小的u盘,比如128m，放上vmlinux ， 载入后， 换大的u盘, 然后执行g。
-  * 或者尝试如下命令，对于U盘是fat文件系统：
-
-        pmon> load /dev/fat/disk@usb0/vmlinux
-
-  * 对于U盘是ext2,3文件系统：
-
-        pmon> load /dev/fs/ext2@usb0/vmlinux
-
-
-
-  * 成功运行内核后，会进入如下界面：
-
-        =======================================================
-        /dev/sda1 loongson2f-openwrt-rootfs-2014.tar.gz xx M
-        =======================================================
+        $ cd /usr/sr/hello/
+        $ gcc hello.c -o hello
+        $ ./hello
         
-        /dev/hda All data will delete! continue? [yes/No/rescan/shell]
-        yes  ## 输入yes，开始安装 ##
-        
-        /dev/hda All DATE WILL DELETE!!! continue? [yes/No]
-        yes  ## 输入yes，确认安装 ##
-        
-        fstype: 1-ext4 2-btrfs
-        Please select[1]: 1  ## 输入1或者2，选择相应的文件系统 ##
+                Hello OpenWrt
+
+<img src="/md/img/openwrt/goldfish/goldfish_run_06.png" alt="loongson2f" align="middle" width="480" height="300"/>
+
+  * 运行tslib触摸屏校正
+
+        $ . /etc/tslib-env.sh
+        $ ts_calibrate
+
+<img src="/md/img/openwrt/goldfish/goldfish_run_04.png" alt="loongson2f" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/goldfish/goldfish_run_05.png" alt="loongson2f" align="middle" width="480" height="300"/>
 
 
-下面开始安装，安装好后会自动重启，在进入一次安装程序，设置OpenWrt的boot.cfg，从而PMON可以引导、启动OpenWrt。
+  * 运行qtopia图形界面
+
+        $ . /etc/tslib-env.sh
+        $ . /etc/qtopia-env.sh
+        $ qpe
+
+<img src="/md/img/openwrt/goldfish/goldfish_qpe_01.png" alt="loongson2f" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/goldfish/goldfish_qpe_02.png" alt="loongson2f" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/goldfish/goldfish_qpe_03.png" alt="loongson2f" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/goldfish/goldfish_qpe_04.png" alt="loongson2f" align="middle" width="480" height="300"/>
 
 
-  * 进入PMON命令行：
-
-        pmon> load (usb0,0)/vmlinux-usbinstall
-        pmon> g
-
-
-  * 把含有boot.cfg的/dev/hda1  mount到mnt目录，设置boot.cfg:
-
-        =======================================================
-        /dev/sda1 loongson2f-openwrt-rootfs-2014.tar.gz xx M
-        =======================================================
-        /dev/hda All data will delete! continue? [yes/No/rescan/shell]
-        shell
-        
-        mkdir -pv /mnt
-        mount /dev/hda1 /mnt/
-        cd /mnt/
-        cp boot.cfg.openwrt boot.cfg
-        reboot
-
-
-okay，安装完毕！
-
-
-  * 龙芯2F本上运行OpenWrt：
-
-<img src="/md/img/openwrt/loongson2f/loongson2f-00-runopenwrt.jpg" alt="loongson2f" align="middle" width="300" height="400"/>
-
-
-  * SSH登陆龙芯本的OpenWrt：
-
-<img src="/md/img/openwrt/loongson2f/loongson2f-01-sshopenwrt.png" alt="loongson2f" align="middle" width="480" height="300"/>
-
-
-  * 这是选择编译LUCI软件包，WEB登录到管理界面：
-
-<img src="/md/img/openwrt/loongson2f/loongson2f-02-webluci01.png" alt="loongson2f" align="middle" width="480" height="300"/>
-
-
-  * WEB登陆龙芯本的LUCI-状态总览界面：
-
-<img src="/md/img/openwrt/loongson2f/loongson2f-02-webluci02.png" alt="loongson2f" align="middle" width="480" height="300"/>
-
-
-  * WEB登陆龙芯本的LUCI-负载界面：
-
-<img src="/md/img/openwrt/loongson2f/loongson2f-02-webluci03.png" alt="loongson2f" align="middle" width="480" height="300"/>
 
 
 
