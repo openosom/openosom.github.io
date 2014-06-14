@@ -105,7 +105,7 @@ __编译目标平台xxx系列__ 是[第三章 编译OpenWrt-DreamBox](/blog/#!/2
 
 
 
-### 4. goldfish运行OpenWrt
+### 3. 运行OpenWrt
 
   * 编译结束后，生成的固件存放在bin/goldfish目录下，其中包含了kernel和rootfs的镜像文件等，以及众多可以使用OPKG工具安装的.ipk安装包。
    - a. qemu-goldfish： 该目录下包含goldfish的模拟器已经所使用的皮肤
