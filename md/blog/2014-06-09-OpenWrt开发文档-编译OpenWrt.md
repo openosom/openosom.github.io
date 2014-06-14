@@ -98,16 +98,16 @@ __比如要为TP-LINK TL-MR3420编译OpenWrt：__
 
         Target System   --->   (X) Atheros AR71xx/AR7240/AR913x
 
-<img src="/md/img/compile/compile_001.png" alt="OpenWrt" align="middle" width="480" height="300"/>
-<img src="/md/img/compile/compile_002.png" alt="" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/compile/compile_001.png" alt="OpenWrt" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/compile/compile_002.png" alt="" align="middle" width="480" height="300"/>
 
 
   * 2 选择路由型号
 
         Target Profile  --->   (X) TP-LINK TL-MR3420 v1
 
-<img src="/md/img/compile/compile_003.png" alt="OpenWrt" align="middle" width="480" height="300"/>
-<img src="/md/img/compile/compile_004.png" alt="" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/compile/compile_003.png" alt="OpenWrt" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/compile/compile_004.png" alt="" align="middle" width="480" height="300"/>
 
 
   * 3 软件包就使用默认的，或者可以根据需要添加。
@@ -172,7 +172,7 @@ __比如要为TP-LINK TL-MR3420编译OpenWrt：__
 
   * 编译过程可能会很久(一边下载源代码一边编译)，请确认你有足够的磁盘空间（应至少保证能够有大约4G以上的空间）。
 
-<img src="/md/img/compile/compile_005.png" alt="" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/compile/compile_005.png" alt="" align="middle" width="480" height="300"/>
 
 
 
@@ -201,7 +201,7 @@ __比如要为TP-LINK TL-MR3420编译OpenWrt：__
 
   这是选择编译LUCI软件包，登录到管理界面：
 
-<img src="/md/img/compile/compile_luci.png" alt="" align="middle" width="480" height="300"/>
+<img src="/md/img/openwrt/compile/compile_luci.png" alt="" align="middle" width="480" height="300"/>
 
 
 
